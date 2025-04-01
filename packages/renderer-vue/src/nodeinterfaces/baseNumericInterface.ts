@@ -26,7 +26,7 @@ export class BaseNumericInterface extends NodeInterface<number> implements IVali
     }
 }
 
-export const useBaseNumericInterface = (intf: Ref<NodeInterface<number>>, precision = 3) => {
+export const useBaseNumericInterface = (intf: Ref<NodeInterface<number>>, precision = 2) => {
     const inputEl = ref<HTMLInputElement | null>(null);
     const editMode = ref(false);
     const invalid = ref(false);
