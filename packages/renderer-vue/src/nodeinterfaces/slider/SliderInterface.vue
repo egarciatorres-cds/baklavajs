@@ -27,6 +27,7 @@
                 style="text-align: right"
                 @blur="leaveEditMode"
                 @keydown.enter="leaveEditMode"
+                :disabled="intf.options.disabled || false"
             />
         </div>
     </div>
@@ -51,7 +52,14 @@ export default defineComponent({
         const isMouseDown = ref(false);
 
         const percentage = computed(() =>
-            Math.min(100, Math.max(0, ((props.intf.value - props.intf.min) * 100) / (props.intf.max - props.intf.min))),
+            Math.min(
+                100,
+                Math.max(
+                    0,
+                    ((props.intf.value - props.intf.options.min) * 100) /
+                        (props.intf.options.max - props.intf.options.min),
+                ),
+            ),
         );
 
         const mousedown = () => {
@@ -78,9 +86,9 @@ export default defineComponent({
             }
             if (isMouseDown.value) {
                 if (ev.offsetX >= el.value!.clientWidth) {
-                    baseNumericInterface.setValue(props.intf.max);
+                    baseNumericInterface.setValue(props.intf.options.max);
                 } else if (ev.offsetX <= 0) {
-                    baseNumericInterface.setValue(props.intf.min);
+                    baseNumericInterface.setValue(props.intf.options.min);
                 }
             }
             isMouseDown.value = false;
@@ -92,10 +100,11 @@ export default defineComponent({
                 return;
             }
             const v = Math.max(
-                props.intf.min,
+                props.intf.options.min,
                 Math.min(
-                    props.intf.max,
-                    (props.intf.max - props.intf.min) * (ev.offsetX / el.value!.clientWidth) + props.intf.min,
+                    props.intf.options.max,
+                    (props.intf.options.max - props.intf.options.min) * (ev.offsetX / el.value!.clientWidth) +
+                        props.intf.options.min,
                 ),
             );
             if (isMouseDown.value) {

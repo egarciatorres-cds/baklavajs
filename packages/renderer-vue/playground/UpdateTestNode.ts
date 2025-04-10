@@ -10,7 +10,10 @@ interface Inputs {
 export default class UpdateTestNode extends Node<Inputs, Record<string, never>> {
     type = "UpdateTestNode";
     inputs = {
-        a: new SliderInterface("Slider", 0.5, 0, 1),
+        a: new SliderInterface("Slider", 0.5, {
+            min: 0,
+            max: 1,
+        }),
         b: new CheckboxInterface("Checkbox", false),
         update: new ButtonInterface("Update", () => this.updateValues()),
     };

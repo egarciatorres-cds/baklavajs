@@ -11,18 +11,25 @@ function isValidator(intf: any): intf is IValidator {
     return "validate" in intf;
 }
 
-export class BaseNumericInterface extends NodeInterface<number> implements IValidator {
-    public min?: number;
-    public max?: number;
+export interface BaseNumericOptions {
+    min?: number;
+    max?: number;
+    disabled?: boolean;
+}
 
-    constructor(name: string, value: number, min?: number, max?: number) {
+export class BaseNumericInterface extends NodeInterface<number> implements IValidator {
+    public options?: BaseNumericOptions;
+
+    constructor(name: string, value: number, options?: BaseNumericOptions) {
         super(name, value);
-        this.min = min;
-        this.max = max;
+        this.options = options;
     }
 
     public validate(v: number) {
-        return (this.min === undefined || v >= this.min) && (this.max === undefined || v <= this.max);
+        return (
+            (this.options?.min === undefined || v >= this.options?.min) &&
+            (this.options?.max === undefined || v <= this.options?.max)
+        );
     }
 }
 
